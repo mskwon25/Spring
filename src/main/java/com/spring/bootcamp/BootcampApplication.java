@@ -1,5 +1,7 @@
 package com.spring.bootcamp;
 
+import com.spring.bootcamp.dao.ConnectionMaker;
+import com.spring.bootcamp.dao.DConnectionMaker;
 import com.spring.bootcamp.dao.UserDao;
 import com.spring.bootcamp.domain.User;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +13,9 @@ import java.sql.SQLException;
 public class BootcampApplication {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
+        ConnectionMaker connectionMaker = new DConnectionMaker();
+
+        UserDao dao = new UserDao(connectionMaker);
 
         User user = new User();
         user.setId("tokigoki");
