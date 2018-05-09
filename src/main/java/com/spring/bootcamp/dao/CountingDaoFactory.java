@@ -1,25 +1,26 @@
 package com.spring.bootcamp.dao;
 
-import com.spring.bootcamp.domain.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * @author minseok.kwon@nhnent.com
- * @since 2018-05-02
+ * @since 2018-05-09
  */
 @Configuration
-public class DaoFactory {
-
+public class CountingDaoFactory {
     @Bean
     public UserDao userDao() {
-        UserDao userDao = new UserDao();
-        userDao.setConnectionMaker(connectionMaker());
-        return userDao;
+        return new UserDao(connectionMaker());
     }
 
     @Bean
     public ConnectionMaker connectionMaker() {
+        return new CountingConnectionMaker(realConnectionMaker());
+    }
+
+    @Bean
+    public ConnectionMaker realConnectionMaker() {
         return new DConnectionMaker();
     }
 }

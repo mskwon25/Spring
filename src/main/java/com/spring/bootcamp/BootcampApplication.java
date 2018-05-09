@@ -1,5 +1,7 @@
 package com.spring.bootcamp;
 
+import com.spring.bootcamp.dao.CountingConnectionMaker;
+import com.spring.bootcamp.dao.CountingDaoFactory;
 import com.spring.bootcamp.dao.DaoFactory;
 import com.spring.bootcamp.dao.UserDao;
 import com.spring.bootcamp.domain.User;
@@ -14,7 +16,7 @@ import java.sql.SQLException;
 public class BootcampApplication {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
         UserDao dao = context.getBean("userDao", UserDao.class);
 
         User user = new User();
@@ -32,6 +34,8 @@ public class BootcampApplication {
 
         System.out.println(user2.getId() + " 조회 성공");
 
+        CountingConnectionMaker ccm = context.getBean("connectionMaker", CountingConnectionMaker.class);
+        System.out.println("Connection counter : " + ccm.getCount());
         SpringApplication.run(BootcampApplication.class, args);
     }
 }

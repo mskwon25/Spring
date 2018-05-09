@@ -9,10 +9,10 @@ import java.sql.*;
  * @since 2018-04-26
  */
 public class UserDao {
-    
+
     public ConnectionMaker connectionMaker;
 
-    public UserDao(ConnectionMaker connectionMaker) {
+    public void setConnectionMaker(ConnectionMaker connectionMaker) {
         this.connectionMaker = connectionMaker;
     }
 
