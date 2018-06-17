@@ -4,7 +4,6 @@ import com.spring.bootcamp.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
 
 import java.sql.SQLException;
 
@@ -22,18 +21,24 @@ public class UserDaoTest {
         ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         UserDao dao = context.getBean("userDao", UserDao.class);
 
+
+        User user1 = new User("heybiblee", "이성경", "qwer1234");
+        User user2 = new User("dlwlrma", "이지은", "qwer1234");
+
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
-        User user = new User("tokigoki", "이성경", "heybiblee");
+        dao.add(user1);
+        dao.add(user2);
+        assertThat(dao.getCount(), is(2));
 
-        dao.add(user);
-        assertThat(dao.getCount(), is(1));
+        User userget1 = dao.get(user1.getId());
+        assertThat(userget1.getName(), is(userget1.getName()));
+        assertThat(userget1.getPassword(), is(userget1.getPassword()));
 
-        User user2 = dao.get(user.getId());
-
-        assertThat(user2.getName(), is(user.getName()));
-        assertThat(user2.getPassword(), is(user.getPassword()));
+        User userget2 = dao.get(user2.getId());
+        assertThat(userget2.getName(), is(userget2.getName()));
+        assertThat(userget2.getPassword(), is(userget2.getPassword()));
     }
 
     @Test
