@@ -67,7 +67,7 @@ public class UserDao {
     public int getCount() throws SQLException {
         Connection c = dataSource.getConnection();
 
-        PreparedStatement ps = c.prepareStatement("select count(*) fron users");
+        PreparedStatement ps = c.prepareStatement("select count(*) from users");
 
         ResultSet rs = ps.executeQuery();
         rs.next();
