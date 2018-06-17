@@ -1,14 +1,16 @@
 package com.spring.bootcamp.dao;
 
 import com.spring.bootcamp.domain.User;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
+import static org.junit.Assert.assertThat;
+
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author minseok.kwon@nhnent.com
@@ -41,7 +43,7 @@ public class UserDaoTest {
         assertThat(userget2.getPassword(), is(userget2.getPassword()));
     }
 
-    @Test
+    @Test(expected = ArithmeticException.class)
     public void count() throws SQLException {
         ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 
@@ -57,5 +59,16 @@ public class UserDaoTest {
 
         dao.add(user2);
         assertThat(dao.getCount(), is(2));
+    }
+
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void getUserFailure() throws SQLException {
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+
+        UserDao dao = context.getBean("userDao", UserDao.class);
+        dao.deleteAll();
+        assertThat(dao.getCount(), is(0));
+
+        dao.get("unknown_id");
     }
 }
