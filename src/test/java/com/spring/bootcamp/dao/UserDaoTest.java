@@ -14,10 +14,14 @@ import static org.junit.Assert.assertThat;
  * @since 2018-05-14
  */
 public class UserDaoTest {
+
     @Test
     public void addAndGet() throws SQLException {
         org.springframework.context.ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         UserDao dao = context.getBean("userDao", UserDao.class);
+
+        dao.deleteAll();
+        assertThat(dao.getCount(), is(0));
 
         User user = new User();
         user.setId("tokigoki");
@@ -25,6 +29,8 @@ public class UserDaoTest {
         user.setPassword("heybiblee");
 
         dao.add(user);
+        assertThat(dao.getCount(), is(1));
+
         User user2 = dao.get(user.getId());
 
         assertThat(user2.getName(), is(user.getName()));
